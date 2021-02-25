@@ -1,0 +1,26 @@
+{
+  "name": "esbuild-plugin-glslify",
+  "version": "1.0.0",
+  "description": "Import GLSL strings with glslify - based on https://github.com/glslify/rollup-plugin-glslify ",
+  "main": "plugin/mod.js",
+  "type": "module",
+  "repository": "https://github.com/darionco/esbuild-plugin-glslify",
+  "author": "Dario Segura",
+  "license": "MIT",
+  "files": [
+    "plugin/"
+  ],
+  "keywords": [
+    "esbuild",
+    "plugin",
+    "glsl",
+    "glslify",
+    "shaders"
+  ],
+  "peerDependencies": {
+    "esbuild": "^0.8.0"
+  },
+  "dependencies": {
+    "glslify": "^7.1.1"
+  }
+}
