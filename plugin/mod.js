@@ -58,7 +58,7 @@ function glslify(options) {
                     basedir: dirname(args.path),
                 }, config);
 
-                const code = _glslify.default.compress(contents, fileOptions);
+                const code = _glslify.default.compile(contents, fileOptions);
 
                 return {
                     contents: config.compress ? compressShader(code) : code,
