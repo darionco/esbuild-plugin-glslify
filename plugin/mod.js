@@ -51,11 +51,13 @@ function glslify(options) {
         setup(build) {
             // unfortunately glslify is not async
             build.onLoad({ filter }, async (args) => {
+                const contents = await fs.promises.readFile(args.path, 'utf8');
+
                 const fileOptions = Object.assign({
                     basedir: dirname(args.path),
                 }, config);
 
-                const code = _glslify.default.file(args.path, fileOptions);
+                const code = _glslify.default.compress(contents, fileOptions);
 
                 return {
                     contents: config.compress ? compressShader(code) : code,
