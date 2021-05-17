@@ -4,6 +4,7 @@
 'use strict';
 
 import { dirname } from 'path';
+import { promises as fsPromises } from 'fs';
 import * as _glslify from 'glslify';
 
 function compressShader(code) {
@@ -51,7 +52,7 @@ function glslify(options) {
         setup(build) {
             // unfortunately glslify is not async
             build.onLoad({ filter }, async (args) => {
-                const contents = await fs.promises.readFile(args.path, 'utf8');
+                const contents = await fsPromises.readFile(args.path, 'utf8');
 
                 const fileOptions = Object.assign({
                     basedir: dirname(args.path),
