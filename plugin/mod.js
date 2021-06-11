@@ -6,23 +6,13 @@
 import { dirname } from 'path';
 import { promises as fsPromises } from 'fs';
 import * as _glslify from 'glslify';
+import GlslMinify from './minify.js';
 
-function compressShader(code) {
-    let needNewline = false;
-    return code.replace(/\\(?:\r\n|\n\r|\n|\r)|\/\*.*?\*\/|\/\/(?:\\(?:\r\n|\n\r|\n|\r)|[^\n\r])*/g, '').split(/\n+/).reduce((result, line) => {
-        line = line.trim().replace(/\s{2,}|\t/, ' ');
-        if (line.charAt(0) === '#') {
-            if (needNewline) {
-                result.push('\n');
-            }
-            result.push(line, '\n');
-            needNewline = false;
-        } else {
-            result.push(line.replace(/\s*({|}|=|\*|,|\+|\/|>|<|&|\||\[|\]|\(|\)|-|!|;)\s*/g, '$1'));
-            needNewline = true;
-        }
-        return result;
-    }, []).join('').replace(/\n+/g, '\n');
+let GlslMinifyInstance;
+async function compressShader(code) {
+    // Code adapted from https://github.com/leosingleton/webpack-glsl-minify
+    GlslMinifyInstance = GlslMinifyInstance || new GlslMinify();
+    return await GlslMinifyInstance.executeFile({ contents: code }).sourceCode;
 }
 
 const kDefaultConfig = {
@@ -48,6 +38,8 @@ function glslify(options) {
     const filter = createFilter(config.extensions);
 
     let requireIndex = 0;
+
+    console.log(typeof webpackGlslMinify, Object.keys(webpackGlslMinify), webpackGlslMinify);
 
     return {
         name: 'glslify',
@@ -77,7 +69,7 @@ function glslify(options) {
                 }
 
                 return {
-                    contents: config.compress ? compressShader(code) : code,
+                    contents: config.compress ? await compressShader(code) : code,
                     loader: 'text',
                 };
             });
