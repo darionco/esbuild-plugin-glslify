@@ -60,7 +60,13 @@ function glslify(options) {
                     basedir: dirname(args.path),
                 }, config);
 
-                const code = _glslify.default.compile(contents, fileOptions);
+                let code = '';
+                try {
+                    code = _glslify.default.compile(contents, fileOptions);
+                } catch (err) {
+                    console.log('Compilation failed', args.spath);
+                    console.log(err);
+                }
 
                 if (contents.includes('require(')) {
                     if (requireIndex === 0) {
