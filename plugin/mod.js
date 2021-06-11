@@ -47,7 +47,7 @@ function glslify(options) {
     const config = Object.assign({}, kDefaultConfig, options);
     const filter = createFilter(config.extensions);
 
-    let index = 0;
+    let requireIndex = 0;
 
     return {
         name: 'glslify',
@@ -62,11 +62,13 @@ function glslify(options) {
 
                 const code = _glslify.default.compile(contents, fileOptions);
 
-                if (index < 10) {
-                    console.log('contents:\n', contents);
-                    console.log('code:\n', code);
+                if (contents.includes('require(')) {
+                    if (requireIndex === 0) {
+                        console.log('contents:\n', contents);
+                        console.log('code:\n', code);
+                    }
+                    requireIndex++;
                 }
-                index++;
 
                 return {
                     contents: config.compress ? compressShader(code) : code,
