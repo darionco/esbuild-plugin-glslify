@@ -39,8 +39,6 @@ function glslify(options) {
 
     let requireIndex = 0;
 
-    console.log(typeof webpackGlslMinify, Object.keys(webpackGlslMinify), webpackGlslMinify);
-
     return {
         name: 'glslify',
         setup(build) {
@@ -52,24 +50,23 @@ function glslify(options) {
                     basedir: dirname(args.path),
                 }, config);
 
-                let code = '';
-                try {
-                    code = _glslify.default.compile(contents, fileOptions);
-                } catch (err) {
-                    console.log('Compilation failed', args.path);
-                    console.log(err);
+                const code = _glslify.default.compile(contents, fileOptions);
+
+                if (config.compress) {
+                    console.log('Compressing...', args.path);
+                    code = await compressShader(code);
                 }
 
-                if (contents.includes('require(')) {
-                    if (requireIndex === 0) {
-                        console.log('contents:\n', contents);
-                        console.log('code:\n', code);
-                    }
-                    requireIndex++;
-                }
+                // if (contents.includes('require(')) {
+                //     if (requireIndex === 0) {
+                //         console.log('contents:\n', contents);
+                //         console.log('code:\n', code);
+                //     }
+                //     requireIndex++;
+                // }
 
                 return {
-                    contents: config.compress ? await compressShader(code) : code,
+                    contents: code,
                     loader: 'text',
                 };
             });
