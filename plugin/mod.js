@@ -53,8 +53,16 @@ function glslify(options) {
                 const code = _glslify.default.compile(contents, fileOptions);
 
                 if (config.compress) {
-                    console.log('Compressing...', args.path);
+                    if (requireIndex === 0) {
+                        console.log('Compressing...', args.path);
+                        console.log('Before', code);
+                    }
+
                     code = await compressShader(code);
+
+                    if (requireIndex === 0) {
+                        console.log('After', code);
+                    }
                 }
 
                 // if (contents.includes('require(')) {
@@ -62,7 +70,7 @@ function glslify(options) {
                 //         console.log('contents:\n', contents);
                 //         console.log('code:\n', code);
                 //     }
-                //     requireIndex++;
+                requireIndex++;
                 // }
 
                 return {
