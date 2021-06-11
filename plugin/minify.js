@@ -271,8 +271,6 @@ class GlslMinify {
   preprocessPass1(content) {
     return __awaiter(this, void 0, void 0, function* () {
 
-      console.log('Got content', content);
-
       let output = content.contents;
       // Remove carriage returns. Use newlines only.
       output = output.replace('\r', '');
