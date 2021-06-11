@@ -64,7 +64,7 @@ function glslify(options) {
                 try {
                     code = _glslify.default.compile(contents, fileOptions);
                 } catch (err) {
-                    console.log('Compilation failed', args.spath);
+                    console.log('Compilation failed', args.path);
                     console.log(err);
                 }
 
