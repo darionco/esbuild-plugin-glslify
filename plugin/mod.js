@@ -62,7 +62,7 @@ function glslify(options) {
 
                 const code = _glslify.default.compile(contents, fileOptions);
 
-                if (index === 0) {
+                if (index < 10) {
                     console.log('contents:\n', contents);
                     console.log('code:\n', code);
                 }
