@@ -47,6 +47,8 @@ function glslify(options) {
     const config = Object.assign({}, kDefaultConfig, options);
     const filter = createFilter(config.extensions);
 
+    let index = 0;
+
     return {
         name: 'glslify',
         setup(build) {
@@ -59,6 +61,12 @@ function glslify(options) {
                 }, config);
 
                 const code = _glslify.default.compile(contents, fileOptions);
+
+                if (index === 0) {
+                    console.log('contents:\n', contents);
+                    console.log('code:\n', code);
+                }
+                index++;
 
                 return {
                     contents: config.compress ? compressShader(code) : code,
